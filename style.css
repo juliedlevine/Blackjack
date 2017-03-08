@@ -1,0 +1,43 @@
+#table {
+    height: 400px;
+    width: 800px;
+    background-color: #97E340;
+    border: 3px solid black;
+    border-radius: 30px;
+}
+
+#dealer-hand, #player-hand {
+    width: 700px;
+    height: 100px;
+    background-color: #b6ef83;
+    margin: auto;
+}
+
+#dealer-label {
+    padding-top: 75px;
+}
+
+#dealer-label, #player-label {
+    display: block;
+    width: 700px;
+    margin: auto;
+}
+
+button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #E7E7E7;
+    border: none;
+}
+.buttons {
+    padding-top: 10px;
+    text-align: center;
+}
+img {
+    padding-top: 5px;
+    height: 90%;
+    margin-left: -20px;
+}
+.hand :first-child {
+    margin: 0;
+}
