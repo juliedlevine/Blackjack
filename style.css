@@ -3,6 +3,8 @@ body {
     text-align: center;
     background-color: #EFEFEF;
 }
+
+/* HEADER STYLES */
 #poker {
     height: 150px;
 }
@@ -16,6 +18,9 @@ h1 {
     text-transform: uppercase;
     font-weight: 400;
 }
+
+
+/* TABLE STYLES */
 #table {
     margin: auto;
     height: 440px;
@@ -23,18 +28,13 @@ h1 {
     background-color: #53AE8D;
     border-radius: 40px;
 }
-
 #dealer-hand, #player-hand {
+    /*text-align: left;*/
     width: 600px;
     height: 100px;
     background-color: white;
     margin: auto;
 }
-
-#dealer-label {
-    /*padding-top: 40px;*/
-}
-
 #dealer-label, #player-label {
     color: white;
     letter-spacing: 0.1em;
@@ -45,6 +45,8 @@ h1 {
     margin: 10px auto 10px;
 }
 
+
+/* BUTTON STYLES */
 button {
     color: #484e56;
     width: 100px;
@@ -69,6 +71,13 @@ button:focus {
     padding-top: 10px;
     text-align: center;
 }
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* CARD STYLES */
 .hand img {
     text-align: left;
     padding-top: 5px;
