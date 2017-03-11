@@ -3,6 +3,7 @@ var dealerHand = [];
 var playerHand = [];
 var bets = new Bets();
 
+// BETS OBJECT
 function Bets(){
   this.pot = 500;
   this.betAmount =0;
