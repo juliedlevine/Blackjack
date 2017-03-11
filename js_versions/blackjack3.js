@@ -120,11 +120,9 @@ Deck.prototype.draw = function(target) {
 };
 
 
-// Initiate player hands and win counts
+// Initiate player hands
 var dealerHand = new Hand('dealer');
 var playerHand = new Hand('player');
-var playerWins = 0;
-var dealerWins = 0;
 
 function deal() {
 
@@ -195,7 +193,6 @@ function dealerTurn() {
     // if Player busts, game is over, every other time show hole card
     if (playerPoints > 21) {
         gameOver = true;
-        dealerWins++;
         $('#messages').html('<h2>PLAYER BUST</h2>');
     } else {
         dealerHand.updateScore();
@@ -209,11 +206,9 @@ function dealerTurn() {
             $('#messages').html('<h2>PUSH</h2>');
       } else if (playerHand.hasBlackjack()) {
             gameOver = true;
-            playerWins++;
             $('#messages').html('<h2>PLAYER BLACKJACK</h2>');
       } else if (dealerHand.hasBlackjack()){
             gameOver = true;
-            dealerWins++;
             $('#messages').html('<h2>DEALER BLACKJACK</h2>');
         }
     }
@@ -228,15 +223,12 @@ function dealerTurn() {
         }
         // See if anyone won after each dealer card, if no winner loop again
         if (dealerPoints < playerPoints) {
-            playerWins++;
             $('#messages').html('<h2>PLAYER WINS</h2>');
         } else if (dealerPoints > 21) {
-            playerWins++;
             $('#messages').html('<h2>DEALER BUSTS</h2>');
         } else if (dealerPoints === playerPoints) {
             $('#messages').html('<h2>PUSH</h2>');
         } else if (dealerPoints > playerPoints) {
-            dealerWins++;
             $('#messages').html('<h2>DEALER WINS</h2>');
         }
     }
@@ -245,13 +237,7 @@ function dealerTurn() {
     $('#deal-button').removeClass('disabled');
     $('#hit-button').addClass('disabled');
     $('#stand-button').addClass('disabled');
-    updateWinCount();
 
-}
-
-function updateWinCount() {
-    $('#dealer-wins').text(dealerWins);
-    $('#player-wins').text(playerWins);
 }
 
 

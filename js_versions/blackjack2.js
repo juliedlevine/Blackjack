@@ -45,7 +45,7 @@ function deal() {
     // Deal 4 cards
     dealCard('player');
     dealCard('dealer');
-
+    // Change dealer's first hand to hole card
     $('#dealer-hand :first-child').attr('src', 'img/card.png');
     dealCard('player');
     dealCard('dealer');
@@ -59,10 +59,6 @@ function deal() {
     $(this).addClass('disabled');
     $('#hit-button').removeClass('disabled');
     $('#stand-button').removeClass('disabled');
-
-    if (calculatePoints(playerHand) === 21) {
-        stand();
-    }
 }
 
 
@@ -78,6 +74,7 @@ function getCardImageTag(card){
 }
 
 
+// Flip hole card
 function flipHoleCard() {
     var holeCard = dealerHand[0];
     var sundry = holeCard.point;
@@ -87,8 +84,6 @@ function flipHoleCard() {
     if (holeCard.point === 13) {sundry = 'king';}
 
     var holeCardSrc = 'deck/' + sundry + '_' + holeCard.suit + '.png';
-    console.log(holeCardSrc);
-
     $('#dealer-hand :first-child').attr('src', holeCardSrc);
 }
 
@@ -162,75 +157,101 @@ function calculatePoints(hand) {
 
 // Player portion, deal card to player and calculate points after that hit
 function hit() {
-    var currentPlayerPoints = calculatePoints(playerHand);
     // If player has less than 21 points, deal a card as player
-    if (currentPlayerPoints < 21) {
+    if (calculatePoints(playerHand) < 21) {
         dealCard('player');
         // Calculate points after player gets new card and update display
         updatePlayerScore();
         // If player has busted, update message and disable hit and stand buttons
-        if (calculatePoints(playerHand) > 21) {
-            $('#messages').html('<h2>PLAYER BUST!</h2>');
-            $('#hit-button').addClass('disabled');
-            $('#stand-button').addClass('disabled');
-            $('#deal-button').removeClass('disabled');
-        }
     }
+    if (calculatePoints(playerHand) >= 21) {
+        // $('#messages').html('<h2>PLAYER BUST</h2>');
+        $('#hit-button').addClass('disabled');
+        $('#stand-button').addClass('disabled');
+        $('#deal-button').removeClass('disabled');
+        dealerTurn();
+    }
+
 }
 
+
 // Start Dealer portion and check winner scenarios
-function stand() {
+function dealerTurn() {
     var gameOver = false;
-    var currentDealerPoints;
-    var currentPlayerPoints = calculatePoints(playerHand);
+    var playerPoints = calculatePoints(playerHand);
+    var dealerPoints = calculatePoints(dealerHand);
+
+    // Check for player blackjack
+    var playerBlackJack;
+    if ( playerPoints === 21 && playerHand.length === 2 ) {
+        playerBlackJack = true;
+    } else {
+        playerBlackJack = false;
+    }
 
     flipHoleCard();
 
-    // Keep dealing cards to dealer until game Over
-    while (gameOver === false && currentPlayerPoints != 21) {
-        currentDealerPoints = calculatePoints(dealerHand);
-        // If delaer has less than 17 points, deal dealer another card
-        if (currentDealerPoints < 17) {
-            dealCard('dealer');
-            // Calculate points after player gets new card and update display
-            updatePlayerScore();
-        } else {
-            gameOver = true;
-        }
+    // Check for player bust
+    if (playerPoints > 21 && gameOver === false) {
+        gameOver = true;
+        $('#messages').html('<h2>PLAYER BUST</h2>');
     }
 
-    // Dealer has more points than player, dealer wins
-    if (currentDealerPoints > currentPlayerPoints) {
-        // Dealer has blackjack
-        if (currentDealerPoints === 21 && dealerHand.length === 2) {
-            $('#messages').html('<h2>BLACKJACK, DEALER WINS!</h2>');
-        // Has dealer busted
-        } else if (currentDealerPoints > 21 ) {
-            $('#messages').html('<h2>DEALER BUSTS, PLAYER WINS</h2>');
-        // Dealer hasn't busted, so dealer wins
-        } else {
-            $('#messages').html('<h2>DEALER WINS</h2>');
-        }
-    }
-
-    // Player has more points than dealer, player wins
-    if (currentPlayerPoints > currentDealerPoints ){
-        // Player has blackjack
-        if (currentPlayerPoints === 21 && dealerHand.length === 2){
-            $('#messages').html('<h2>BLACKJACK, PLAYER WINS!</h2>');
-        // Has player busted?
-        } else if (currentPlayerPoints > 21 ) {
-            $('#messages').html('<h2>PLAYER BUSTS, DEALER WINS</h2>');
-        // Else just regular winner
-        } else {
-            $('#messages').html('<h2>PLAYER WINS</h2>');
-        }
-    }
-
-    // Check for Push
-    if (currentDealerPoints === currentPlayerPoints){
+    // Blackjack / 21 points for player AND dealer
+    if (playerPoints === 21 && dealerPoints === 21 && gameOver === false) {
+        gameOver = true;
         $('#messages').html('<h2>PUSH</h2>');
     }
+
+    // Dealer points above hit requirement threshold AND higher than player
+    // Possible for dealer to have BlackJack in this scenario
+    if (dealerPoints > 16 && dealerPoints > playerPoints && gameOver === false) {
+        gameOver = true;
+        if (dealerPoints === 21) {
+            $('#messages').html('<h2>DEALER BLACKJACK</h2>');
+        } else {
+        $('#messages').html('<h2>DEALER WINS</h2>');
+        }
+    }
+
+    // Dealer points above hit requirement threshold AND both scores are equal
+    if (dealerPoints > 16 && playerPoints === dealerPoints && gameOver === false) {
+        gameOver = true;
+        $('#messages').html('<h2>PUSH</h2>');
+    }
+
+    // Dealer points less than player OR under hit requirement threshold
+    if ((dealerPoints <= playerPoints || dealerPoints < 17) && gameOver === false) {
+
+        // Deal card to dealer until one of these conditions is met
+        while (gameOver === false) {
+            dealCard('dealer');
+            dealerPoints = calculatePoints(dealerHand);
+
+            // Dealer bust. Player could have Blackjack in this scenario
+            if (dealerPoints > 21) {
+                gameOver = true;
+                if (playerBlackJack) {
+                    $('#messages').html('<h2>PLAYER BLACKJACK</h2>');
+                } else {
+                    $('#messages').html('<h2>PLAYER WINS</h2>');
+                }
+
+            // Dealer and Player have same hand, and dealer is not required to take another hit card
+            } else if (dealerPoints === playerPoints && dealerPoints > 16) {
+                $('#messages').html('<h2>PUSH</h2>');
+                gameOver = true;
+
+            // Dealer has more points than player and is not required to take another hit card
+            } else if (dealerPoints > playerPoints && dealerPoints > 16) {
+                gameOver = true;
+                // if (currentDealerPoints === 21) {
+                    $('#messages').html('<h2>DEALER WINS</h2>');
+                // }
+            }
+        } // End while loop scenarios
+
+    } // End final win check scenario
 
     // Make deal button only active button
     $('#deal-button').removeClass('disabled');
@@ -240,23 +261,27 @@ function stand() {
     updateDealerScore();
 }
 
-// Changes score display
+
+// Update Player score HTML
 function updatePlayerScore() {
     var playerPoints = calculatePoints(playerHand);
     $('#player-label').text('PLAYER: ' + playerPoints);
 }
 
+
+// Update Dealer score HTML
 function updateDealerScore() {
     var dealerPoints = calculatePoints(dealerHand);
     $('#dealer-label').text('DEALER: ' + dealerPoints);
 }
+
 
 $(function () {
 
     // Button click event handlers
     $('#deal-button').click(deal);
     $('#hit-button').click(hit);
-    $('#stand-button').click(stand);
+    $('#stand-button').click(dealerTurn);
 
 
 }); // End DOM Ready

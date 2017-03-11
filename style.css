@@ -36,13 +36,21 @@ h1 {
     margin: auto;
 }
 #dealer-label, #player-label {
+    display: block;
     color: white;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-align: left;
-    display: block;
     width: 600px;
     margin: 10px auto 10px;
+}
+.wins {
+    float: right;
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: -32px;
+    margin-right: 55px;
 }
 
 
@@ -86,4 +94,119 @@ button:focus {
 }
 .hand :first-child {
     margin: 0;
+}
+
+
+/* BET STYLES */
+.betting {
+    margin: 20px auto;
+    height: 100px;
+    width: 700px;
+    background-color: #d9dbdd;
+    border-radius: 40px;
+}
+.betting div {
+    display: inline-block;
+}
+.betting img {
+    height: 80px;
+    margin-top: 8px;
+    margin-right: 18px;
+}
+.betting img:hover {
+    cursor: pointer;
+}
+.bet-square {
+    float: left;
+    margin-left: 42px;
+}
+.pot-square {
+    float: right;
+    margin-right: 47px;
+}
+.bet-square, .pot-square {
+    font-weight: 800;
+    font-size: 23px;
+    margin-top: -8px;
+    width: 100px;
+    letter-spacing: 0.1em;
+    color: #484e56;
+    text-transform: uppercase;
+}
+#pot, #bet {
+    margin-top: -24px;
+    margin-left: -5px;
+}
+
+
+/* MEDIA QUERIES */
+@media (max-width: 650px) {
+    #poker {
+        height: 120px;
+    }
+    #table, .buttons, .betting {
+        width: 100%;
+    }
+    #dealer-hand, #player-hand, #player-label, #dealer-label {
+        width: 95%;
+    }
+    #player-label, #dealer-label {
+        margin-left: 10px;
+    }
+    button {
+        width: 80px;
+        padding: 12px 12px;
+    }
+    .betting {
+        height: 154px;
+    }
+    .betting div {
+        display: block;
+    }
+    .container {
+        position: relative;
+    }
+    .container div {
+        position: absolute;
+    }
+    .bet-square {
+        top: 35px;
+        left: -54px;
+        font-size: 21px;
+    }
+    .betting img {
+        height: 63px;
+    }
+    #five, #fifteen {
+        left: 75px;
+    }
+    #ten, #fifty {
+        left: 150px;
+    }
+    #fifteen, #fifty {
+        top: 72px;
+    }
+    .pot-square {
+        top: 35px;
+        left: 212px;
+        font-size: 21px;
+    }
+}
+/* Iphone plus */
+@media (max-width: 414px) {
+    .container {
+        margin-left: 12%;
+    }
+}
+/* Iphone 6 */
+@media (max-width: 375px) {
+    .container {
+        margin-left: 8%;
+    }
+}
+/* Iphone 5 */
+@media (max-width: 320px) {
+    .container {
+        margin-left: 0%;
+    }
 }
