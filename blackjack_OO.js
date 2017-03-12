@@ -2,34 +2,42 @@ var deck;
 var dealerHand = [];
 var playerHand = [];
 var bets = new Bets();
+var currentHand;
 
-// BETS OBJECT
 function Bets(){
   this.pot = 500;
-  this.betAmount =0;
+  this.bet =0;
   $('#bet').text(0);
   $('#pot').text('$' + this.pot);
 
 }
 
 Bets.prototype.updateAmounts = function (){
-  $('#bet').text('$' + this.betAmount);
+  $('#bet').text('$' + this.bet);
   $('#pot').text('$' + this.pot);
 };
+
 Bets.prototype.potAmount = function(){
   return this.pot;
 
 };
-Bets.prototype.enableDoubleDown = function () {
-  //add code to enable DD button
-};
-Bets.prototype.disableDoubleDown = function() {
 
-  // add code to disable DD button
+Bets.prototype.enableDoubleDown = function () {
+  $('#doubledown').removeClass('disabled');
+
+};
+
+Bets.prototype.disableDoubleDown = function() {
+  $('#doubledown').removeClass('disabled');
+};
+
+Bets.prototype.doubleDown = function() {
+  this.pot -= this.bet;
+  this.bet += this.bet;
 };
 
 Bets.prototype.betAmount = function(){
-  return this.betAmount;
+  return this.bet;
 
 };
 Bets.prototype.disableDeal = function () {
@@ -39,40 +47,51 @@ Bets.prototype.disableDeal = function () {
 
 Bets.prototype.addBet = function(amount){
 
-    if (this.pot > amount) {
+    if (this.pot >= amount) {
       this.pot = this.pot - amount;
-      this.betAmount = this.betAmount + amount;
+      this.bet = this.bet + amount;
       this.updateAmounts();
       $('#deal-button').removeClass('disabled');
+    } else {
+      notEnoughChips();
     }
-  };
+};
 
 
 Bets.prototype.winner = function(){
-    this.pot += this.betAmount*2;
-    this.betAmount = 0;
+    this.pot += this.bet*2;
+    this.bet = 0;
     this.updateAmounts();
     this.disableDeal();
 };
 
 Bets.prototype.loser = function (){
-  this.betAmount = 0;
+  this.bet = 0;
   this.updateAmounts();
   this.disableDeal();
 };
 
 Bets.prototype.push = function (){
-  this.pot += this.betAmount;
-  this.betAmount = 0;
+  this.pot += this.bet;
+  this.bet = 0;
   this.updateAmounts();
   this.disableDeal();
 };
 
 Bets.prototype.blackJackWinner = function(){
-    this.pot += parseInt(this.betAmount*2.5);
-    this.betAmount =0;
+    this.pot += parseInt(this.bet*2.5);
+    this.bet =0;
     this.updateAmounts();
     this.disableDeal();
+};
+
+Bets.prototype.updateOptions = function(){
+  if (playerHand.numCards()===2){
+    $('#doubledown').removeClass('disabled');
+  } else {
+    $('#doubledown').removeClass('disabled');
+  }
+
 };
 
 
@@ -91,17 +110,35 @@ Card.prototype.getImageUrl = function(){
   // return 'images/' + sundry + "_" + this.suit + ".png";
   return '<img src="deck/' + sundry + '_' + this.suit + '.png">';
 };
+//      Hands Object
+function Hands() {
+  this.hands = [];
 
+}
+
+Hands.prototype.addHand = function(hand) {
+  this.hands.push(hand);
+
+};
 //            Hand Object
-function Hand() {this.hand =[];}
+
+function Hand() {
+  this.hand =[];
+  this.doubledown = false;
+}
 
 Hand.prototype.addCard = function(card){
   this.hand.push(card);
 
 };
 
+Hand.prototype.secondCardAce = function(){
+  return (this.hand[1].point === 1);
+
+};
+
 Hand.prototype.hasBlackJack = function(){
-  return (this.hand.length ===2 && this.getPoints()===21);
+  return (this.hand.length === 2 && this.getPoints() === 21);
 };
 
 
@@ -113,6 +150,10 @@ Hand.prototype.numCards = function(){
 Hand.prototype.firstCard = function(){
   return this.hand[0];
 
+};
+
+Hand.prototype.doubleDown = function(){
+  this.doubleDown = true;
 };
 
 Hand.prototype.getPoints = function(){
@@ -214,13 +255,22 @@ function deal() {
 
     // Change message to play, disable deal button and enable other buttons
     $('#messages').html("<h2>LET'S PLAY</h2>");
-    $(this).addClass('disabled');
+    $('#deal-button').addClass('disabled');
     $('#hit-button').removeClass('disabled');
     $('#stand-button').removeClass('disabled');
 
-    if (playerHand.getPoints()===21) {
+    if (bets.potAmount() >= bets.betAmount()){
+      $('#doubledown').removeClass('disabled');
+    }
+
+    if (playerHand.hasBlackJack()) {
       dealerTurn();
     }
+
+    if(dealerHand.secondCardAce()){
+      $('#insurance').removeClass('disabled');
+    }
+
 }
 
 function flipHoleCard() {
@@ -236,16 +286,21 @@ function flipHoleCard() {
     $('#dealer-hand :first-child').attr('src', holeCardSrc);
 }
 
+function doubleDown(){
+  playerHand.doubleDown();
+  deck.draw('player');
+  bets.doubleDown();
+  updatePlayerScore();
+  dealerTurn();
+}
+
 // Player portion, deal card to player and calculate points after that hit
 function hit() {
-    // If player has less than 21 points, deal a card as player
-    if (playerHand.getPoints() < 21) {
-        deck.draw('player');
-        // dealCard('player');
-        // Calculate points after player gets new card and update display
-        updatePlayerScore();
-        // If player has busted, update message and disable hit and stand buttons
-    }
+    $('#doubledown').addClass('disabled');
+    //  Deal a card as player
+
+    deck.draw('player');
+    updatePlayerScore();
 
     if (playerHand.getPoints() >= 21) {
         $('#hit-button').addClass('disabled');
@@ -265,6 +320,7 @@ function dealerTurn() {
     var playerHasBlackJack = playerHand.hasBlackJack();
     var dealerHasBlackJack = dealerHand.hasBlackJack();
 
+    $('#doubledown').addClass('disabled');
     // if (playerPoints > 21 then game is over) {
     if (playerPoints > 21) {
         revealHoleCard = false;
@@ -325,6 +381,9 @@ function dealerTurn() {
     if (revealHoleCard === true){
       updateDealerScore();
     }
+    if (bets.potAmount() <= 5){
+      outOfChips();
+    }
 }
 
 // Changes score display
@@ -340,6 +399,35 @@ function updateDealerScore() {
     $('#dealer-label').text('DEALER: ' + dealerPoints);
 }
 
+function outOfChips(){
+    swal({
+      title: "You're Out of Chips!",
+      text: "That's too bad. \n Do you want to play again?",
+      imageUrl: "img/chip-2.png"
+    },
+      function(isConfirm){
+        if (isConfirm) {
+          bets = new Bets();
+        }
+    });
+}
+
+function notEnoughChips(){
+    swal({
+      title: "Insufficient Chips!",
+      text: "You don't have enough chips for that.",
+      imageUrl: "img/chip-2.png"
+    });
+}
+
+function welcome() {
+  swal({
+    title: "Welcome to Blackjack!",
+    text: "Table minimum is $5. Click any of the chips to start betting. \n Ready to play?",
+    imageUrl: "img/chip.png"
+  });
+}
+
 $(function () {
 
     // Button click event handlers
@@ -349,12 +437,13 @@ $(function () {
 
     $('#stand-button').click(dealerTurn);
 
-    $('#five').click(function() {
-      bets.addBet(5);
-    });
+    $('#five').click(function() {bets.addBet(5);});
     $('#ten').click(function() {bets.addBet(10);});
     $('#fifteen').click(function() {bets.addBet(15);});
     $('#fifty').click(function() {bets.addBet(50);});
+    $('#doubledown').click(doubleDown);
+    welcome();
+
 
 
 }); // End DOM Ready
