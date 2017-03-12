@@ -1,0 +1,248 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    background-color: #EFEFEF;
+}
+
+/* HEADER STYLES */
+#poker {
+    height: 150px;
+}
+h1 {
+    letter-spacing: 0.3em;
+}
+#messages h2 {
+    margin: 0;
+    padding-top: 30px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+
+/* TABLE STYLES */
+#table {
+    position: relative; /* relative parent for arrow */
+    margin: auto;
+    height: 440px;
+    width: 700px;
+    background-color: #53AE8D;
+    border-radius: 40px;
+}
+#dealer-hand, #player-hand {
+    /*text-align: left;*/
+    width: 600px;
+    height: 100px;
+    background-color: white;
+    margin: auto;
+}
+#dealer-label, #player-label {
+    display: block;
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    width: 600px;
+    margin: 10px auto 10px;
+}
+.wins {
+    float: right;
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: -32px;
+    margin-right: 55px;
+}
+
+
+/* BUTTON STYLES */
+.buttons button {
+    color: #484e56;
+    width: 80px;
+    background-color: #EFEFEF;
+    border: none;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    margin-top: 25px;
+    vertical-align: top;
+    height: 40px;
+}
+.buttons button:hover {
+    opacity: 0.7;
+    transition: 1s;
+    cursor: pointer;
+}
+.buttons button:focus {
+    outline: none;
+    border: none;
+}
+.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* CARD STYLES */
+.hand img {
+    text-align: left;
+    padding-top: 5px;
+    height: 90%;
+    margin-left: -20px;
+}
+.hand :first-child {
+    margin: 0;
+}
+#table p {
+    position: absolute;
+    top: 202px;
+    left: 64%;
+    color: white;
+    font-size: 14px;
+}
+#player-arrow {
+    position: absolute;
+    top: 282px;
+    left: 87%;
+}
+#player-arrow:hover {
+    cursor: pointer;
+}
+.multiple-hands {
+    /*visibility: hidden;*/
+}
+.show {
+    visibility: visible;
+}
+
+/* BET STYLES */
+.betting {
+    margin: 20px auto;
+    height: 100px;
+    width: 700px;
+    background-color: #d9dbdd;
+    border-radius: 40px;
+}
+.betting div {
+    display: inline-block;
+}
+.betting img {
+    height: 80px;
+    margin-top: 8px;
+    margin-right: 18px;
+}
+.betting img:hover {
+    cursor: pointer;
+}
+.bet-square {
+    float: left;
+    margin-left: 42px;
+}
+.pot-square {
+    float: right;
+    margin-right: 47px;
+}
+.bet-square, .pot-square {
+    font-weight: 800;
+    font-size: 23px;
+    margin-top: -8px;
+    width: 100px;
+    letter-spacing: 0.1em;
+    color: #484e56;
+    text-transform: uppercase;
+}
+#pot, #bet {
+    margin-top: -24px;
+    margin-left: -5px;
+}
+
+
+/* MEDIA QUERIES */
+@media (max-width: 650px) {
+    #poker {
+        height: 120px;
+    }
+    #table {
+        height: 487px;
+    }
+    #table p {
+        left: 48%;
+    }
+    #table, .buttons, .betting {
+        width: 100%;
+    }
+    #dealer-hand, #player-hand, #player-label, #dealer-label {
+        width: 95%;
+    }
+    #player-label, #dealer-label {
+        margin-left: 10px;
+    }
+    .buttons button {
+        margin-top: 5px;
+        font-size: 15px;
+        width: 47%;
+        padding: 12px 0px;
+    }
+    #double-button {
+        padding-top: 1px;
+    }
+    .betting {
+        height: 154px;
+    }
+    .betting div {
+        display: block;
+    }
+    .container {
+        height: 100%;
+        position: relative;
+        margin-left: 26%;
+    }
+    .container div {
+        position: absolute;
+    }
+    .bet-square {
+        top: 35px;
+        left: -54px;
+        font-size: 21px;
+    }
+    .pot-square {
+        top: 35px;
+        left: 212px;
+        font-size: 21px;
+    }
+    .betting img {
+        height: 63px;
+    }
+    #five, #fifteen {
+        left: 75px;
+    }
+    #ten, #fifty {
+        left: 150px;
+    }
+    #fifteen, #fifty {
+        top: 72px;
+    }
+}
+/* Iphone plus */
+@media (max-width: 414px) {
+    .container {
+        margin-left: 12%;
+    }
+}
+/* Iphone 6 */
+@media (max-width: 375px) {
+    .container {
+        margin-left: 8%;
+    }
+    #table p {
+        left: 42%;
+    }
+}
+/* Iphone 5 */
+@media (max-width: 320px) {
+    .container {
+        margin-left: 0%;
+    }
+    #table p {
+        left: 34%;
+    }
+}
