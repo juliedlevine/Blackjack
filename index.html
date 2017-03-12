@@ -34,9 +34,11 @@
           </div>
 
           <div class="buttons">
+            <div class="arrow-left hidden"></div>
             <button id="deal-button" class="disabled">Deal</button>
             <button id="hit-button" class="disabled">Hit</button>
             <button id="stand-button" class="disabled">Stand</button>
+            <div class="arrow-right hidden"></div>
           </div>
         </div>
 
@@ -64,24 +66,32 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
+        <div class="betting-options">
+            <button id="insurance" class="disabled">Insurance</button>
+            <button id="doubledown" class="disabled">Double Down</button>
+            <button id="split" class="disabled">Split</button>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+    // Function to run when double down button is clicked
+    function doubleDownPopUp() {
         swal({
-          title: "Welcome to Blackjack!",
-          text: "Table minimum is $5. Click any of the chips to start betting. \n Ready to play?",
-          imageUrl: "img/chip.png"
+            title: "Double Down",
+            text: "How much do you want to add to your bet? You can add any amount up to your current bet. Enter a number below or click cancel.",
+            type: "input",
+            showCancelButton: true,
+            animation: "slide-from-top",
+            inputPlaceholder: "Bet amount",
+            customClass: "double-down"
         });
 
-        // swal({
-        //   title: "You're Out of Chips!",
-        //   text: "That's too bad. \n Do you want to play again?",
-        //   imageUrl: "img/chip-2.png"
-        // });
-        $('.confirm').on('click', function() {
-            // Add code to reset pot
-            console.log('OK Button clicked');
+        $('.double-down .confirm').on('click', function() {
+            // Add code to add money when player doubles down
+            var doubleDownAmount = $('.double-down input').val();
+            console.log('Player increases bet by: $' + doubleDownAmount);
         })
-
-
+    }
     </script>
-    </body>
+
 </html>

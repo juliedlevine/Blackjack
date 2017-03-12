@@ -55,7 +55,7 @@ h1 {
 
 
 /* BUTTON STYLES */
-button {
+.buttons button, .betting-options button {
     color: #484e56;
     width: 100px;
     padding: 12px 20px;
@@ -66,18 +66,16 @@ button {
     letter-spacing: 0.1em;
     margin-top: 11px;
 }
-button:hover {
+.buttons button:hover,
+.betting-options button {
     opacity: 0.7;
     transition: 1s;
     cursor: pointer;
 }
-button:focus {
+.buttons button:focus,
+.betting-options button {
     outline: none;
     border: none;
-}
-.buttons {
-    padding-top: 10px;
-    text-align: center;
 }
 
 .disabled {
@@ -103,7 +101,7 @@ button:focus {
     height: 100px;
     width: 700px;
     background-color: #d9dbdd;
-    border-radius: 40px;
+    border-radius: 15px;
 }
 .betting div {
     display: inline-block;
@@ -138,24 +136,87 @@ button:focus {
     margin-left: -5px;
 }
 
+/*styles that Todd added for betting*/
+
+.betting-options {
+    margin: 20px auto;
+    height: 60px;
+    width: 700px;
+    background-color: #d9dbdd;
+    border-radius: 15px;
+    text-align: center;
+}
+
+#insurance {
+  width: 150px;
+  margin-left: 10px;
+  margin-top: 9px;
+}
+
+#doubledown {
+  width: 180px;
+  margin-left: 10px;
+  margin-top: 9px;
+}
+
+#split {
+  width: 100px;
+  margin-left: 10px;
+  margin-top: 9px;
+}
+
+.hidden {
+  pointer-events: none;
+  opacity: 0.0;
+}
+
+.arrow-left {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  top: 16px;
+  left: -10px;
+  border-top: 22px solid transparent;
+  border-bottom: 22px solid transparent;
+  border-right:40px solid white;
+}
+
+.arrow-right {
+  position: relative;
+  display: inline-block;
+  top: 16px;
+  right: -10px;
+  width: 0;
+  height: 0;
+  border-top: 22px solid transparent;
+  border-bottom: 22px solid transparent;
+  border-left: 40px solid white;
+}
+
 
 /* MEDIA QUERIES */
 @media (max-width: 650px) {
     #poker {
         height: 120px;
     }
-    #table, .buttons, .betting {
+    #table {
+        height: 423px;
+    }
+    #table, .buttons, .betting, .betting-options {
         width: 100%;
     }
-    #dealer-hand, #player-hand, #player-label, #dealer-label {
+    #dealer-hand, #player-hand, #player-label, #dealer-label, #insurance #doubledown, #split {
         width: 95%;
     }
     #player-label, #dealer-label {
         margin-left: 10px;
     }
-    button {
-        width: 80px;
-        padding: 12px 12px;
+    .buttons button {
+        margin-top: 5px;
+        font-size: 15px;
+        width: 22%;
+        padding: 12px 0px;
     }
     .betting {
         height: 154px;
@@ -164,7 +225,9 @@ button:focus {
         display: block;
     }
     .container {
+        height: 100%;
         position: relative;
+        margin-left: 26%;
     }
     .container div {
         position: absolute;
@@ -191,6 +254,14 @@ button:focus {
     #fifteen, #fifty {
         top: 72px;
     }
+    .betting-options {
+        height: 163px;
+    }
+    #insurance, #doubledown, #split {
+        width: 95%;
+        margin-left: 1px;
+        margin-top: 9px;
+    }
 }
 /* Iphone plus */
 @media (max-width: 414px) {
@@ -203,10 +274,16 @@ button:focus {
     .container {
         margin-left: 8%;
     }
+    #table p {
+        left: 42%;
+    }
 }
 /* Iphone 5 */
 @media (max-width: 320px) {
     .container {
         margin-left: 0%;
+    }
+    #table p {
+        left: 34%;
     }
 }
