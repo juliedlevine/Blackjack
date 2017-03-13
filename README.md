@@ -34,7 +34,7 @@ If the player chooses to double down a pop up will appear asking how much they'd
 
 If the player runs out of chips a pop up appears letting them know they've run out of chips and asking if they want to play again. If OK is clicked, a new game starts clearing the board and re-setting their chips to $500.
 <br>
-![alt text](https://github.com/juliemdyer/Portfolio/blob/master/screenshots/game_over.png)
+![alt text](https://github.com/juliemdyer/Blackjack/blob/master/screenshots/game_over.png)
 
 
 
