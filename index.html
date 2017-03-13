@@ -34,20 +34,23 @@
           </div>
 
           <div class="buttons">
-            <div class="arrow-left hidden"></div>
             <button id="deal-button" class="disabled">Deal</button>
+            <button id="doubledown" class="disabled">Double Down</button>
             <button id="hit-button" class="disabled">Hit</button>
             <button id="stand-button" class="disabled">Stand</button>
-            <div class="arrow-right hidden"></div>
           </div>
         </div>
+    <div class="betting">
+            <div class="bet-square">
+                <p>Bet </p>
+                <p id="bet">$0</p>
+            </div>
+            <div class="pot-square">
+                <p>Chips</p>
+                <p id="pot">$500</p>
+            </div>
 
-        <div class="betting">
-            <div class="container">
-                <div class="bet-square">
-                    <p>Bet</p>
-                    <p id="bet">$0</p>
-                </div>
+            <div class="chips">
                 <div id="five">
                     <img src="img/chip-5.png" alt="Poker Chip 5 value">
                 </div>
@@ -60,38 +63,46 @@
                 <div id="fifty">
                     <img src="img/chip-3.png" alt="Poker Chip 50 value">
                 </div>
-                <div class="pot-square">
-                    <p>Chips</p>
-                    <p id="pot">$500</p>
-                </div>
+
             </div>
-        </div>
-        <div class="betting-options">
-            <button id="insurance" class="disabled">Insurance</button>
-            <button id="doubledown" class="disabled">Double Down</button>
-            <button id="split" class="disabled">Split</button>
+
         </div>
     </body>
 
     <script type="text/javascript">
     // Function to run when double down button is clicked
+
     function doubleDownPopUp() {
         swal({
             title: "Double Down",
-            text: "How much do you want to add to your bet? You can add any amount up to your current bet. Enter a number below or click cancel.",
+            text: "Enter the amount you'd like to increase your bet by. You can increase up to your current bet amount.",
             type: "input",
             showCancelButton: true,
+            closeOnConfirm: false,
             animation: "slide-from-top",
             inputPlaceholder: "Bet amount",
-            customClass: "double-down"
-        });
+            customClass: "double-down",
+        },
 
-        $('.double-down .confirm').on('click', function() {
-            // Add code to add money when player doubles down
-            var doubleDownAmount = $('.double-down input').val();
-            console.log('Player increases bet by: $' + doubleDownAmount);
-        })
+        function(inputValue) {
+            if (inputValue === false) return false;
+
+            if (inputValue === "") {
+                swal.showInputError("Not a valid amount!");
+                return false
+            }
+
+            // Add another condition to check if input value is too high
+
+          swal("Nice!", "You increased your bet by " + inputValue, "success");
+
+          console.log('Player increases bet by $' + inputValue);
+
+        });
     }
+
+    $('#doubledown').click(doubleDownPopUp);
+
     </script>
 
 </html>
