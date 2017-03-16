@@ -51,7 +51,7 @@ Player blackjack on mobile version
 Our first version of the game we realized we weren't using the correct blackjack rules, so we had to go back and do some research and change our scenarios. On the whiteboard we ran through each deal scenario to make sure all of our if statements were caught at the appropriate point. We ended up turning this into a flow chart which we then implemented in the code.
 
 Flow chart
-![alt text](https://github.com/juliemdyer/Portfolio/blob/master/screenshots/flow_chart.png)
+![alt text](https://github.com/juliemdyer/Portfolio/blob/master/screenshots/flow_chart.pdf)
 
 Code checking winner / loser / push scenarios. All of this happens during the Dealer's turn
 ```JavaScript
